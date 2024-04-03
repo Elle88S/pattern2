@@ -24,17 +24,16 @@ class AuthTest {
     void shouldSuccessfulLoginIfRegisteredActiveUser() {
         var registeredUser = getRegisteredUser("active");
         $("[data-test-id=login] input").setValue(registeredUser.getLogin());
-        $("[data-test-id=login] input").setValue(registeredUser.getPassword());
+        $("[data-test-id=password] input").setValue(registeredUser.getPassword());
         $("button.button").click();
         $("h2").shouldHave(Condition.text("Личный кабинет")).shouldBe(Condition.visible);
     }
-
     @Test
     @DisplayName("Should get error message if login with not registered user")
     void shouldGetErrorIfNotRegisteredUser() {
         var notRegisteredUser = getUser("active");
         $("[data-test-id=login] input").setValue(notRegisteredUser.getLogin());
-        $("[data-test-id=login] input").setValue(notRegisteredUser.getPassword());
+        $("[data-test-id=password] input").setValue(notRegisteredUser.getPassword());
         $("button.button").click();
         $("[data-test-id=error-notification]").shouldHave(Condition.text("Неверно указан логин или пароль"))
                 .shouldBe(Condition.visible);
@@ -45,9 +44,10 @@ class AuthTest {
     void shouldGetErrorIfBlockedUser() {
         var blockedUser = getRegisteredUser("blocked");
         $("[data-test-id=login] input").setValue(blockedUser.getLogin());
-        $("[data-test-id=login] input").setValue(blockedUser.getPassword());
+        $("[data-test-id=password] input").setValue(blockedUser.getPassword());
         $("button.button").click();
-        $("[data-test-id=error-notification] notification__content").shouldHave(Condition.text("Пользователь заблокирован"))
+        $("[data-test-id=error-notification] .notification__content").
+                shouldHave(Condition.text("Пользователь заблокирован"))
                 .shouldBe(Condition.visible);
         ;
 
@@ -59,9 +59,10 @@ class AuthTest {
         var registeredUser = getRegisteredUser("active");
         var wrongLogin = getRandomLogin();
         $("[data-test-id=login] input").setValue(wrongLogin);
-        $("[data-test-id=login] input").setValue(registeredUser.getPassword());
+        $("[data-test-id=password] input").setValue(registeredUser.getPassword());
         $("button.button").click();
-        $("[data-test-id=error-notification] notification__content").shouldHave(Condition.text("Неверно указан логин или пароль"))
+        $("[data-test-id=error-notification] .notification__content").
+                shouldHave(Condition.text("Неверно указан логин или пароль"))
                 .shouldBe(Condition.visible);
         ;
 
@@ -73,9 +74,9 @@ class AuthTest {
         var registeredUser = getRegisteredUser("active");
         var wrongPassword = getRandomPassword();
         $("[data-test-id=login] input").setValue(registeredUser.getLogin());
-        $("[data-test-id=login] input").setValue(wrongPassword);
+        $("[data-test-id=password] input").setValue(wrongPassword);
         $("button.button").click();
-        $("[data-test-id=error-notification] notification__content")
+        $("[data-test-id=error-notification] .notification__content")
                 .shouldHave(Condition.text("Неверно указан логин или пароль"))
                 .shouldBe(Condition.visible);
         ;
